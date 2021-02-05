@@ -1,7 +1,4 @@
-﻿using System;
-using ILGPU;
-
-namespace ArrayViewSketches
+﻿namespace ArrayViewSketches
 {
     public interface IStride1D
     {
@@ -18,7 +15,7 @@ namespace ArrayViewSketches
         public DimTuple1 Stride { get; }
     }
 
-    public readonly struct DenseDim1D : IStride1D
+    public readonly struct DenseStride1D : IStride1D
     {
         public DimTuple1 Stride => 1;
     }
@@ -40,14 +37,14 @@ namespace ArrayViewSketches
             Dim = dim;
         }
 
-        public ArrayView1D<TElem, DenseDim1D> AsDense()
+        public ArrayView1D<TElem, DenseStride1D> AsDense()
         {
             if (Dim.Stride.X != 1)
             {
                 // throw new ApplicationException("ArrayView1D is not dense");
             }
             
-            return new ArrayView1D<TElem, DenseDim1D>(Data, Extent, new DenseDim1D());
+            return new ArrayView1D<TElem, DenseStride1D>(Data, Extent, new DenseStride1D());
         }
 
         public ArrayView1D<TElem, TDim> SubView(DimTuple1 offset, DimTuple1 extent)

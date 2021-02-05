@@ -126,8 +126,6 @@
                 // throw new IndexOutOfRangeException();
             }
 
-            ILGPU.Interop.WriteLine("General purpose SliceX");
-
             var offset = y * arr.Stride.Y;
             var data = arr.Data.GetSubView(offset);
             var dim = new GeneralStride1D(arr.Stride.X);
@@ -135,7 +133,7 @@
         }
         
         // Take a dense 1D slice out of a 2D array that is known to be X-major
-        public static ArrayView1D<TElem, DenseDim1D> SliceX<TElem>(
+        public static ArrayView1D<TElem, DenseStride1D> SliceX<TElem>(
             this ArrayView2D<TElem, Stride2DDenseX> arr,
             long y)
         where TElem : unmanaged
@@ -144,13 +142,11 @@
             {
                 // throw new IndexOutOfRangeException();
             }
-            
-            ILGPU.Interop.WriteLine("Specialized SliceX");
 
             var offset = y * arr.Stride.Y;
             var data = arr.Data.GetSubView(offset);
-            var dim = new DenseDim1D();
-            return new ArrayView1D<TElem, DenseDim1D>(data, arr.Extent.X, dim);
+            var dim = new DenseStride1D();
+            return new ArrayView1D<TElem, DenseStride1D>(data, arr.Extent.X, dim);
         }
         
         public static ArrayView1D<TElem, GeneralStride1D> SliceY<TElem, TDim>(
@@ -169,7 +165,7 @@
             return new ArrayView1D<TElem, GeneralStride1D>(data, arr.Extent.Y, dim);
         }
         
-        public static ArrayView1D<TElem, DenseDim1D> SliceY<TElem>(
+        public static ArrayView1D<TElem, DenseStride1D> SliceY<TElem>(
             this ArrayView2D<TElem, Stride2DDenseY> arr,
             long x)
         where TElem : unmanaged
@@ -181,8 +177,8 @@
 
             var offset = x * arr.Stride.X;
             var data = arr.Data.GetSubView(offset);
-            var dim = new DenseDim1D();
-            return new ArrayView1D<TElem, DenseDim1D>(data, arr.Extent.Y, dim);
+            var dim = new DenseStride1D();
+            return new ArrayView1D<TElem, DenseStride1D>(data, arr.Extent.Y, dim);
         }
     }
 }

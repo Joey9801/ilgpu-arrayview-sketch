@@ -7,7 +7,7 @@ namespace ArrayViewSketches
         where TElem: unmanaged
         where TView: struct // Really want to constrain this to be some sort of ArrayView with the same TElem...
     {
-        public MemoryBuffer(ILGPU.Runtime.MemoryBuffer<TElem> storage, TView rootView)
+        internal MemoryBuffer(ILGPU.Runtime.MemoryBuffer<TElem> storage, TView rootView)
         {
             _storage = storage;
             RootView = rootView;
@@ -25,11 +25,11 @@ namespace ArrayViewSketches
 
     public static class Allocator
     {
-        public static MemoryBuffer<T, ArrayView1D<T, DenseDim1D>> Allocate1D<T>(this Accelerator a, DimTuple1 extent) where T : unmanaged
+        public static MemoryBuffer<T, ArrayView1D<T, DenseStride1D>> Allocate1D<T>(this Accelerator a, DimTuple1 extent) where T : unmanaged
         {
             var storage = a.Allocate<T>(extent.X);
-            var rootView = new ArrayView1D<T, DenseDim1D>(storage, extent, new DenseDim1D());
-            return new MemoryBuffer<T, ArrayView1D<T, DenseDim1D>>(storage, rootView);
+            var rootView = new ArrayView1D<T, DenseStride1D>(storage, extent, new DenseStride1D());
+            return new MemoryBuffer<T, ArrayView1D<T, DenseStride1D>>(storage, rootView);
         }
 
         public static MemoryBuffer<T, ArrayView2D<T, Stride2DDenseX>> Allocate2D<T>(this Accelerator a, DimTuple2 extent) where T : unmanaged

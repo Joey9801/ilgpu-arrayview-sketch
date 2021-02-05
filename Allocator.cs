@@ -62,5 +62,33 @@ namespace ArrayViewSketches
             var rootView = new ArrayView2D<T, Stride2DDenseY>(storage, extent, new Stride2DDenseY(extent.X));
             return new MemoryBuffer<T, ArrayView2D<T, Stride2DDenseY>>(storage, rootView);
         }
+
+        public static MemoryBuffer<T, ArrayView2D<T, Stride2DDenseX>> Allocate2DPitchedX<T>(
+            this Accelerator a,
+            DimTuple2 extent)
+        where T : unmanaged
+        {
+            // Limitation: Since the underlying storage for our custom ArrayView's is well-typed, can only add padding
+            // in increments of sizeof(T) bytes. This limitation could be lifted within this sketch with some unsafe
+            // code here that always used a backing store of type <byte> and casted pointers on every access.
+
+            long unpitchedBytes;
+            unsafe
+            {
+                if (sizeof(T) > 128 || 128 % sizeof(T) != 0)
+                {
+                    throw new ArgumentException($"Cannot perform pitched allocation for {nameof(T)}");
+                }
+
+                unpitchedBytes = extent.X * sizeof(T);
+            }
+
+            var pitchedBytes = ((unpitchedBytes - 1) / 128 + 1) * 128;
+            var pitchedExtentX = pitchedBytes / 128;
+
+            var storage = a.Allocate<T>(pitchedExtentX * extent.Y);
+            var rootView = new ArrayView2D<T, Stride2DDenseX>(storage, extent, new Stride2DDenseX(pitchedExtentX));
+            return new MemoryBuffer<T, ArrayView2D<T, Stride2DDenseX>>(storage, rootView);
+        }
     }
 }

@@ -25,26 +25,38 @@ namespace ArrayViewSketches
 
     public static class Allocator
     {
-        public static MemoryBuffer<T, ArrayView1D<T, DenseStride1D>> Allocate1D<T>(this Accelerator a, DimTuple1 extent) where T : unmanaged
+        public static MemoryBuffer<T, ArrayView1D<T, DenseStride1D>> Allocate1D<T>(
+            this Accelerator a,
+            DimTuple1 extent)
+        where T : unmanaged
         {
             var storage = a.Allocate<T>(extent.X);
             var rootView = new ArrayView1D<T, DenseStride1D>(storage, extent, new DenseStride1D());
             return new MemoryBuffer<T, ArrayView1D<T, DenseStride1D>>(storage, rootView);
         }
 
-        public static MemoryBuffer<T, ArrayView2D<T, Stride2DDenseX>> Allocate2D<T>(this Accelerator a, DimTuple2 extent) where T : unmanaged
+        public static MemoryBuffer<T, ArrayView2D<T, Stride2DDenseX>> Allocate2D<T>(
+            this Accelerator a,
+            DimTuple2 extent) 
+        where T : unmanaged
         {
             return a.Allocate2DDenseX<T>(extent);
         }
         
-        public static MemoryBuffer<T, ArrayView2D<T, Stride2DDenseX>> Allocate2DDenseX<T>(this Accelerator a, DimTuple2 extent) where T : unmanaged
+        public static MemoryBuffer<T, ArrayView2D<T, Stride2DDenseX>> Allocate2DDenseX<T>(
+            this Accelerator a,
+            DimTuple2 extent)
+        where T : unmanaged
         {
             var storage = a.Allocate<T>(extent.X * extent.Y);
             var rootView = new ArrayView2D<T, Stride2DDenseX>(storage, extent, new Stride2DDenseX(extent.X));
             return new MemoryBuffer<T, ArrayView2D<T, Stride2DDenseX>>(storage, rootView);
         }
         
-        public static MemoryBuffer<T, ArrayView2D<T, Stride2DDenseY>> Allocate2DDenseY<T>(this Accelerator a, DimTuple2 extent) where T : unmanaged
+        public static MemoryBuffer<T, ArrayView2D<T, Stride2DDenseY>> Allocate2DDenseY<T>(
+            this Accelerator a,
+            DimTuple2 extent)
+        where T : unmanaged
         {
             var storage = a.Allocate<T>(extent.X * extent.Y);
             var rootView = new ArrayView2D<T, Stride2DDenseY>(storage, extent, new Stride2DDenseY(extent.X));

@@ -21,7 +21,8 @@ namespace Demo
         {
             void Kernel(ArrayView2D<int, Stride2DDenseX> arr, VariableView<int> result)
             {
-                // Known at compile time that `arr` is dense in the X axis, so the X slice yields a compile time dense 1D view:
+                // Known at compile time that `arr` is dense in the X axis, so the X slice yields a compile time dense
+                // 1D view:
                 // ArrayView1D<int, DenseStride1D>
                 var thirdRow = arr.SliceX(2);
                 
@@ -43,8 +44,9 @@ namespace Demo
         {
             void Kernel<TS>(ArrayView2D<int, TS> arr, VariableView<int> result) where TS : IStride2D
             {
-                // Can provide a hint that this is actually dense in the Y dimension if the type doesn't explicitly say so.
-                // This should explode if arr.Stride.Y != 1 at runtime.
+                // Can provide a hint that `arr` is actually dense in the Y dimension if the type doesn't explicitly say
+                // so. This should explode if arr.Stride.Y != 1 at runtime (possibly only where debug assertions are
+                // enabled), else compile down to a no-op.
                 // ArrayView2D<int, Stride2DDenseY>
                 var arrY = arr.AsDenseY();
                 
@@ -53,7 +55,8 @@ namespace Demo
                 var thirdRow = arrY.SliceX(2);
                 
                 
-                // Known at compile time that `arr` is dense in the Y axis, so the Y slice yields a compile time dense 1D view:
+                // Known at compile time that `arr` is dense in the Y axis, so the Y slice yields a compile time dense
+                // 1D view:
                 // ArrayView1D<int, DenseStride1D>
                 var thirdCol = arrY.SliceY(2);
                 

@@ -98,8 +98,8 @@
         {
             get
             {
-                if (idx.X < 0 || idx.X > Extent.X ||
-                    idx.Y < 0 || idx.Y > Extent.Y)
+                if (idx.X < 0 || idx.X >= Extent.X ||
+                    idx.Y < 0 || idx.Y >= Extent.Y)
                 {
                     // throw new IndexOutOfRangeException();
                 }
@@ -111,6 +111,8 @@
                 }
             }
         }
+
+        public ref TElem this[long x, long y] => ref this[(x, y)];
     }
 
     public static class ArrayView2DExtensions

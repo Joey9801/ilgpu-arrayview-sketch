@@ -64,7 +64,7 @@
         {
             get
             {
-                if (idx.X < 0 || idx.X > Extent.X)
+                if (idx.X < 0 || idx.X >= Extent.X)
                 {
                     // throw new IndexOutOfRangeException();
                 }

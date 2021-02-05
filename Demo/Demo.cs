@@ -23,11 +23,11 @@ namespace Demo
             {
                 // Known at compile time that `arr` is dense in the X axis, so the X slice yields a compile time dense
                 // 1D view:
-                // ArrayView1D<int, DenseStride1D>
+                // ArrayView1D<int, Stride1DDense>
                 var thirdRow = arr.SliceX(2);
                 
                 // Not dense in the Y axis, so get a general purpose strided 1D view:
-                // ArrayView1D<int, GeneralStride1D>
+                // ArrayView1D<int, Stride1DGeneral>
                 var thirdCol = arr.SliceY(2);
                 
                 // Dummy result to prevent ILGPU pruning the above completely
@@ -51,13 +51,13 @@ namespace Demo
                 var arrY = arr.AsDenseY();
                 
                 // Not dense in the X axis, so get a general purpose strided 1D view:
-                // ArrayView1D<int, GeneralStride1D>
+                // ArrayView1D<int, Stride1DGeneral>
                 var thirdRow = arrY.SliceX(2);
                 
                 
                 // Known at compile time that `arr` is dense in the Y axis, so the Y slice yields a compile time dense
                 // 1D view:
-                // ArrayView1D<int, DenseStride1D>
+                // ArrayView1D<int, Stride1DDense>
                 var thirdCol = arrY.SliceY(2);
                 
                 // Dummy result to prevent ILGPU pruning the above completely

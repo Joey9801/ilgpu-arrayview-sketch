@@ -25,14 +25,14 @@ namespace ArrayViewSketches
 
     public static class Allocator
     {
-        public static MemoryBuffer<T, ArrayView1D<T, DenseStride1D>> Allocate1D<T>(
+        public static MemoryBuffer<T, ArrayView1D<T, Stride1DDense>> Allocate1D<T>(
             this Accelerator a,
             DimTuple1 extent)
         where T : unmanaged
         {
             var storage = a.Allocate<T>(extent.X);
-            var rootView = new ArrayView1D<T, DenseStride1D>(storage, extent, new DenseStride1D());
-            return new MemoryBuffer<T, ArrayView1D<T, DenseStride1D>>(storage, rootView);
+            var rootView = new ArrayView1D<T, Stride1DDense>(storage, extent, new Stride1DDense());
+            return new MemoryBuffer<T, ArrayView1D<T, Stride1DDense>>(storage, rootView);
         }
 
         public static MemoryBuffer<T, ArrayView2D<T, Stride2DDenseX>> Allocate2D<T>(
@@ -68,9 +68,9 @@ namespace ArrayViewSketches
             DimTuple2 extent)
         where T : unmanaged
         {
-            // Limitation: Since the underlying storage for our custom ArrayView's is well-typed, can only add padding
+            // Limitation: Since the underlying storage for our custom ArrayViews is well-typed, can only add padding
             // in increments of sizeof(T) bytes. This limitation could be lifted within this sketch with some unsafe
-            // code here that always used a backing store of type <byte> and casted pointers on every access.
+            // code that always used a backing store of type <byte> and casted pointers on every access.
 
             long unpitchedBytes;
             unsafe

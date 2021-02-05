@@ -5,9 +5,9 @@
         DimTuple1 Stride { get; }
     }
 
-    public readonly struct GeneralStride1D : IStride1D
+    public readonly struct Stride1DGeneral : IStride1D
     {
-        public GeneralStride1D(DimTuple1 stride)
+        public Stride1DGeneral(DimTuple1 stride)
         {
             Stride = stride;
         }
@@ -15,7 +15,7 @@
         public DimTuple1 Stride { get; }
     }
 
-    public readonly struct DenseStride1D : IStride1D
+    public readonly struct Stride1DDense : IStride1D
     {
         public DimTuple1 Stride => 1;
     }
@@ -37,14 +37,14 @@
             Dim = dim;
         }
 
-        public ArrayView1D<TElem, DenseStride1D> AsDense()
+        public ArrayView1D<TElem, Stride1DDense> AsDense()
         {
             if (Dim.Stride.X != 1)
             {
                 // throw new ApplicationException("ArrayView1D is not dense");
             }
             
-            return new ArrayView1D<TElem, DenseStride1D>(Data, Extent, new DenseStride1D());
+            return new ArrayView1D<TElem, Stride1DDense>(Data, Extent, new Stride1DDense());
         }
 
         public ArrayView1D<TElem, TDim> SubView(DimTuple1 offset, DimTuple1 extent)

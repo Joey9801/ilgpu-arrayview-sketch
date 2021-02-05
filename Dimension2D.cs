@@ -116,7 +116,7 @@
     public static class ArrayView2DExtensions
     {
         // Take a 1D slice of a 2D array where we don't know the stride at compile time
-        public static ArrayView1D<TElem, GeneralStride1D> SliceX<TElem, TDim>(
+        public static ArrayView1D<TElem, Stride1DGeneral> SliceX<TElem, TDim>(
             this ArrayView2D<TElem, TDim> arr,
             long y)
         where TElem : unmanaged where TDim : IStride2D
@@ -128,12 +128,12 @@
 
             var offset = y * arr.Stride.Y;
             var data = arr.Data.GetSubView(offset);
-            var dim = new GeneralStride1D(arr.Stride.X);
-            return new ArrayView1D<TElem, GeneralStride1D>(data, arr.Extent.X, dim);
+            var dim = new Stride1DGeneral(arr.Stride.X);
+            return new ArrayView1D<TElem, Stride1DGeneral>(data, arr.Extent.X, dim);
         }
         
         // Take a dense 1D slice out of a 2D array that is known to be X-major
-        public static ArrayView1D<TElem, DenseStride1D> SliceX<TElem>(
+        public static ArrayView1D<TElem, Stride1DDense> SliceX<TElem>(
             this ArrayView2D<TElem, Stride2DDenseX> arr,
             long y)
         where TElem : unmanaged
@@ -145,11 +145,11 @@
 
             var offset = y * arr.Stride.Y;
             var data = arr.Data.GetSubView(offset);
-            var dim = new DenseStride1D();
-            return new ArrayView1D<TElem, DenseStride1D>(data, arr.Extent.X, dim);
+            var dim = new Stride1DDense();
+            return new ArrayView1D<TElem, Stride1DDense>(data, arr.Extent.X, dim);
         }
         
-        public static ArrayView1D<TElem, GeneralStride1D> SliceY<TElem, TDim>(
+        public static ArrayView1D<TElem, Stride1DGeneral> SliceY<TElem, TDim>(
             this ArrayView2D<TElem, TDim> arr,
             long x)
         where TElem : unmanaged where TDim : IStride2D
@@ -161,11 +161,11 @@
 
             var offset = x * arr.Stride.X;
             var data = arr.Data.GetSubView(offset);
-            var dim = new GeneralStride1D(arr.Stride.Y);
-            return new ArrayView1D<TElem, GeneralStride1D>(data, arr.Extent.Y, dim);
+            var dim = new Stride1DGeneral(arr.Stride.Y);
+            return new ArrayView1D<TElem, Stride1DGeneral>(data, arr.Extent.Y, dim);
         }
         
-        public static ArrayView1D<TElem, DenseStride1D> SliceY<TElem>(
+        public static ArrayView1D<TElem, Stride1DDense> SliceY<TElem>(
             this ArrayView2D<TElem, Stride2DDenseY> arr,
             long x)
         where TElem : unmanaged
@@ -177,8 +177,8 @@
 
             var offset = x * arr.Stride.X;
             var data = arr.Data.GetSubView(offset);
-            var dim = new DenseStride1D();
-            return new ArrayView1D<TElem, DenseStride1D>(data, arr.Extent.Y, dim);
+            var dim = new Stride1DDense();
+            return new ArrayView1D<TElem, Stride1DDense>(data, arr.Extent.Y, dim);
         }
     }
 }
